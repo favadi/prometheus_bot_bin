@@ -1,0 +1,17 @@
+language: go
+
+script:
+  - go get -d github.com/inCaller/prometheus_bot
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' github.com/inCaller/prometheus_bot prometheus_bot
+  - [ -n $TRAVIS_TAG ] && mkdir prometheus_bot_$TRAVIS_TAG && mv prometheus_bot prometheus_bot_$TRAVIS_TAG && tar -cvjSf prometheus_bot_$TRAVIS_TAG.tar.bz2 prometheus_bot_$TRAVIS_TAG
+
+deploy:
+  provider: releases
+  api_key: "$GITHUB_API_KEY"
+  file: prometheus_bot_$TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+
+go:
+  - "1.10.x"
