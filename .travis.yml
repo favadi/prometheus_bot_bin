@@ -1,17 +1,18 @@
 language: go
-
 script:
   - go get -d github.com/inCaller/prometheus_bot
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' github.com/inCaller/prometheus_bot prometheus_bot
-  - [ -n $TRAVIS_TAG ] && mkdir prometheus_bot_$TRAVIS_TAG && mv prometheus_bot prometheus_bot_$TRAVIS_TAG && tar -cvjSf prometheus_bot_$TRAVIS_TAG.tar.bz2 prometheus_bot_$TRAVIS_TAG
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' github.com/inCaller/prometheus_bot
+  - test -n $TRAVIS_TAG  && mkdir prometheus_bot_$TRAVIS_TAG && mv prometheus_bot prometheus_bot_$TRAVIS_TAG && tar -cvjSf prometheus_bot_$TRAVIS_TAG.tar.bz2 prometheus_bot_$TRAVIS_TAG
 
 deploy:
   provider: releases
-  api_key: "$GITHUB_API_KEY"
-  file: prometheus_bot_$TRAVIS_TAG
+  api_key:
+    secure: F/e6/8rYqROh0YYVnEQD0H/WP58gdOLUZinCvrZ0xjmeQeh/pzS+JjzWFcNxcLVhqdaMr0+3VgzPh+fL9EpBIYx5tDOnAJldtSEgdCFDenl+SweFtzAl4gm/jmLMohY9vnzeELFtIUcIfIMlTESyW5IaV7eTRo19dPDCeit5HSJ9U5gzlD5TGIWkRQHBFsoKCp7xQOBshP7wyMmc58lbf4ptxQrHrvNGisGThne+MS6jnF/yEYhjuiuIY9ao/c+os+Xupz/gaFMegR+pv9y4GVeUaT6jUMIdHa7LM13l3oVGLKBYmFKbyyceH7vd1/W9/McB9Eb7NJVMzqGsEALnBUXsR1wUabwW27qjRUmtroRnH30gkcZhtFcCeENHuMnxkinz+jvR/AjfJ7rRVyGCtJfmExd0wVCiqIUjziunIp5yz9XJc4Hh41rPV0GmYi531rYr66CxFcUh07Cg300Pu+X6N72YRP2UO2j/lb0MTP6Hr42yFSuLQ5MilKAT5nU2nK9sKt59bmQiRIyR1Mmcl7Q12EPa9cGk0f7gZG3MSq6YoonuN6RNMdlAt2K9peGJ8o8+YI+8sGN+KGhLGvRiDgdE+a2460YmfiBUMFQWPwog+yFGB9CDFK8kbFASYO/spqKb0ghhpPyFUX83eY9ixNFIeDuSJlNcJQA+ID+5qRc=
   skip_cleanup: true
+  file: prometheus_bot_$TRAVIS_TAG
   on:
     tags: true
+    repo: favadi/prometheus_bot_bin
 
 go:
-  - "1.10.x"
+  - 1.10.x
