@@ -1,6 +1,9 @@
 language: go
-script:
+
+install:
   - go get -d github.com/inCaller/prometheus_bot
+
+script:
   - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w' github.com/inCaller/prometheus_bot
   - test -n $TRAVIS_TAG  && mkdir prometheus_bot_$TRAVIS_TAG && mv prometheus_bot prometheus_bot_$TRAVIS_TAG && tar -cvjSf prometheus_bot_$TRAVIS_TAG.tar.bz2 prometheus_bot_$TRAVIS_TAG
 
